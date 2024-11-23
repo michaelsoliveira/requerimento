@@ -7,7 +7,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./application:/var/www/html
+      - ./backend:/var/www/html
     networks:
       - meta_network
     depends_on:
@@ -34,7 +34,7 @@ services:
     networks:
       - meta_network
     volumes:
-      - ./application/:/var/www/html/
+      - ./backend/:/var/www/html/
       - ./logs/nginx:/var/log/nginx
     container_name: nginx
 
