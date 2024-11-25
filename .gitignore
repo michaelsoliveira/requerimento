@@ -1,0 +1,5 @@
+db-data/*
+mariadb_data/*
+moodle/moodle_data/*
+moodle/moodledata_data/*
+logs/*
