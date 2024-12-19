@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
@@ -42,13 +43,14 @@ class AuthController extends Controller
                 }
 
                 $authToken = $user->createToken('auth-token')->plainTextToken;
-
-                // Se o usuário for encontrado, redireciona para o menu com sucesso
-                return redirect()->route('/menu')->with([
-                    'status' => 'success',
-                    'user' => $user,
-                    'token' => $authToken
-                ]);
+                if (Auth::attempt(['name'   => $request->username, 'password' => $request->password])) {
+                    // Se o usuário for encontrado, redireciona para o menu com sucesso
+                    return redirect()->route('menu')->with([
+                        'status' => 'success',
+                        'user' => $user,
+                        'token' => $authToken
+                    ]);
+                }
                 // return response()->json([
                 //     'access_token'  => $authToken
                 // ]);
@@ -66,5 +68,11 @@ class AuthController extends Controller
             'status' => 'error',
             'message' => 'Failed to fetch user data from Moodle',
         ], 500);
+    }
+    
+    public function logout() {
+        auth()->logout();
+
+        return redirect()->route('login');
     }
 }

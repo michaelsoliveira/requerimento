@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\AtendenteController;
 use App\Http\Controllers\MenuController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,12 @@ Route::get('/login', function () {
 
 // Rota de envio do formulário para autenticar
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-Route::get('/menu', [MenuController::class, 'index']);
+Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::middleware('auth:sanctum')->post('/solicitacao/store', [SolicitacaoController::class, 'store'])->name('solicitacao.store');
 
